@@ -45,10 +45,12 @@ class Line {
 
 const xAxis = (length, pix) => Array(length).fill(pix).map((x, i) => x * i);
 
-const line = (length, slope, intercept) => {
+const line = (length, angle, intercept) => {
+  const radianAngle = Math.PI * (angle / 180);
+  const slope = Math.tan(radianAngle);
+
   const slopedLine = new Line(slope, intercept);
-  const angle = Math.atan(slope);
-  const pix = (Math.cos(angle) * length) / 100;
+  const pix = (Math.cos(radianAngle) * length) / 100;
   const bottomAxis = xAxis(length, pix);
   const html = bottomAxis.map((x) => slopedLine.toHtml(x));
 
@@ -56,4 +58,4 @@ const line = (length, slope, intercept) => {
   return `<div ${defaultStyle}>${html.join('')}</div>`;
 }
 
-fs.writeFileSync('./line.html', line(150, 0, 0), 'utf8');
+fs.writeFileSync('./line.html', line(150, 45, 0), 'utf8');
